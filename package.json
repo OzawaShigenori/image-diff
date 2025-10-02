@@ -1,0 +1,47 @@
+{
+  "name": "image-diff",
+  "version": "1.0.0",
+  "description": "CLI tool for comparing images using pixelmatch",
+  "type": "module",
+  "bin": {
+    "image-diff": "./dist/cli.js"
+  },
+  "main": "./dist/compare.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/cli.ts",
+    "server": "tsx src/server.ts",
+    "server:dev": "tsx watch src/server.ts",
+    "precommit": "npm run build && npm run typecheck",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "image",
+    "diff",
+    "compare",
+    "pixelmatch",
+    "png",
+    "cli"
+  ],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.17.0",
+  "dependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/multer": "^2.0.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "pixelmatch": "^7.1.0",
+    "pngjs": "^7.0.0",
+    "yargs": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.6.2",
+    "@types/pngjs": "^6.0.5",
+    "@types/yargs": "^17.0.33",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
