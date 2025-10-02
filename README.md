@@ -1,6 +1,6 @@
-# Image Diff CLI
+# Image Diff
 
-A command-line tool for comparing PNG images using [pixelmatch](https://github.com/mapbox/pixelmatch).
+A comprehensive tool for comparing PNG images using [pixelmatch](https://github.com/mapbox/pixelmatch). Available as both a command-line interface and a web application.
 
 ## Installation
 
@@ -21,25 +21,55 @@ pnpm link --global
 
 ## Usage
 
-### Development mode
+### Web Application
+
+Start both the API server and web application:
+
+```bash
+# Start API server (Express)
+pnpm run server:dev
+
+# Start web application (Next.js) - in another terminal
+cd web
+pnpm install
+pnpm run dev
+```
+
+Then open your browser to:
+- **Web App**: http://localhost:3002 (or available port)
+- **API Server**: http://localhost:3001
+
+#### Web Features
+- **Drag & Drop Upload**: Upload two PNG images for comparison
+- **Real-time Preview**: See uploaded images before comparison
+- **Interactive Options**: Adjust threshold, anti-aliasing, and diff mask settings
+- **Multiple View Modes**:
+  - **Side by Side**: View original images and diff side by side
+  - **Overlay**: Overlay diff on original image
+- **Statistics Display**: Shows mismatched pixels, total pixels, and difference ratio
+- **Download Results**: Save diff image to your computer
+
+### Command Line Interface
+
+#### Development mode
 
 ```bash
 pnpm run dev <image1> <image2> [options]
 ```
 
-### Production mode (after building)
+#### Production mode (after building)
 
 ```bash
 node dist/cli.js <image1> <image2> [options]
 ```
 
-### Global usage (after linking)
+#### Global usage (after linking)
 
 ```bash
 image-diff <image1> <image2> [options]
 ```
 
-## Options
+## CLI Options
 
 - `-o, --output <path>`: Path to save the diff image (default: `diff.png`)
 - `-t, --threshold <number>`: Matching threshold, 0-1 (default: `0.1`)
@@ -97,7 +127,9 @@ image-diff image1.png image2.png --aa --aaColor 255,255,0
 ### Scripts
 
 - `pnpm run build`: Build TypeScript files
-- `pnpm run dev`: Run in development mode with tsx
+- `pnpm run dev`: Run CLI in development mode with tsx
+- `pnpm run server`: Start Express API server
+- `pnpm run server:dev`: Start Express server with hot reload
 - `pnpm run typecheck`: Type check without building
 - `pnpm run precommit`: Build and typecheck before committing
 
@@ -109,9 +141,38 @@ Create test images and run comparison:
 # Create test images
 node test/create-test-images.js
 
-# Compare test images
+# Compare test images using CLI
 pnpm run dev test/image1.png test/image2.png -o test/diff.png
+
+# Test web application
+# 1. Start servers
+pnpm run server:dev
+cd web && pnpm run dev
+
+# 2. Open http://localhost:3002 and upload test images
 ```
+
+## Architecture
+
+```
+image-diff/
+├── src/
+│   ├── compare.ts      # Core image comparison logic
+│   ├── cli.ts          # Command line interface
+│   └── server.ts       # Express API server
+├── web/                # Next.js web application
+│   ├── app/
+│   │   └── page.tsx    # Main comparison UI
+│   └── package.json
+├── output/             # Generated diff images
+└── test/               # Test images and utilities
+```
+
+### API Endpoints
+
+- `POST /api/compare`: Upload two images and get comparison result
+- `GET /output/:filename`: Serve generated diff images
+- `GET /health`: Health check endpoint
 
 ## License
 
